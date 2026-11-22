@@ -6,7 +6,15 @@
   <meta name="theme-color" content="#050507" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="JAADUGAR" />
+  <meta name="application-name" content="JAADUGAR" />
   <title>JAADUGAR — VIP Control</title>
+
+  <!-- Browser Tab Icon (Gold Crest J) -->
+  <link id="favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23050507'/%3E%3Cpolygon points='256,56 436,156 436,356 256,456 76,356 76,156' fill='none' stroke='%23eab308' stroke-width='26'/%3E%3Ctext x='256' y='325' text-anchor='middle' font-family='Arial Black, sans-serif' font-size='215' font-weight='900' fill='%23facc15'%3EJ%3C/text%3E%3C/svg%3E" />
+  <link id="apple-icon" rel="apple-touch-icon" sizes="180x180" href="" />
+  <link id="pwa-manifest" rel="manifest" href="" />
+
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -15,7 +23,6 @@
       --surface-2: #14161f;
       --gold: #eab308;
       --gold-light: #fde047;
-      --gold-glow: rgba(234, 179, 8, 0.25);
       --green: #10b981;
       --red: #f43f5e;
       --cyan: #06b6d4;
@@ -33,7 +40,6 @@
       overflow-x: hidden;
     }
 
-    /* Ambient Gold Glow */
     .bg-glow {
       position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
       width: 420px; height: 280px; border-radius: 50%;
@@ -49,17 +55,17 @@
     }
     .lock-card {
       width: 100%; max-width: 360px;
-      background: rgba(12, 13, 18, 0.92);
+      background: rgba(12, 13, 18, 0.94);
       border: 1px solid rgba(234, 179, 8, 0.35);
       border-radius: 22px; padding: 32px 24px; text-align: center;
       box-shadow: 0 25px 60px rgba(0,0,0,0.85), 0 0 35px rgba(234,179,8,0.08);
       backdrop-filter: blur(16px);
     }
     .lock-logo {
-      width: 64px; height: 64px; margin: 0 auto 14px; border-radius: 18px;
-      background: linear-gradient(135deg, #eab308, #a16207);
+      width: 66px; height: 66px; margin: 0 auto 14px; border-radius: 18px;
+      background: linear-gradient(135deg, #facc15, #a16207);
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 900; color: #050507;
+      font-family: 'Orbitron', sans-serif; font-size: 30px; font-weight: 900; color: #050507;
       box-shadow: 0 0 28px rgba(234, 179, 8, 0.45);
     }
     .lock-title {
@@ -67,13 +73,13 @@
       letter-spacing: 3px; color: #fff;
     }
     .lock-title span { color: var(--gold); }
-    .lock-sub { font-size: 12px; color: var(--muted); margin: 6px 0 24px; letter-spacing: 1px; }
+    .lock-sub { font-size: 11px; color: var(--muted); margin: 6px 0 24px; letter-spacing: 1px; }
 
     .pin-input {
       width: 100%; background: #050507; border: 1px solid rgba(234, 179, 8, 0.35);
       color: var(--gold-light); padding: 15px; border-radius: 14px;
       font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 800;
-      text-align: center; letter-spacing: 8px; outline: none; margin-bottom: 14px;
+      text-align: center; letter-spacing: 8px; outline: none; margin-bottom: 16px;
     }
     .pin-input:focus { border-color: var(--gold); box-shadow: 0 0 20px rgba(234,179,8,0.2); }
 
@@ -98,7 +104,7 @@
     .brand-wrap { display: flex; align-items: center; gap: 12px; }
     .mini-logo {
       width: 40px; height: 40px; border-radius: 12px;
-      background: linear-gradient(135deg, #eab308, #a16207);
+      background: linear-gradient(135deg, #facc15, #a16207);
       display: flex; align-items: center; justify-content: center;
       font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 18px; color: #050507;
     }
@@ -120,7 +126,6 @@
     }
     .icon-btn:active { transform: scale(0.94); }
 
-    /* STATS */
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
     .stat-card {
       background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
@@ -133,7 +138,6 @@
     .stat-num { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900; }
     .stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 700; }
 
-    /* SEARCH & FILTERS */
     .controls-bar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
     .search-input {
       width: 100%; background: var(--surface); border: 1px solid var(--border);
@@ -151,7 +155,6 @@
       border-color: rgba(234, 179, 8, 0.45);
     }
 
-    /* USER CARDS */
     .user-list { display: flex; flex-direction: column; gap: 11px; }
     .user-card {
       background: linear-gradient(145deg, #0e1017, #090a0f);
@@ -187,7 +190,6 @@
     .act-activate { border-color: rgba(16,185,129,0.35); color: #6ee7b7; background: rgba(16,185,129,0.1); }
     .act-reset { border-color: rgba(6,182,212,0.35); color: #67e8f9; background: rgba(6,182,212,0.08); }
 
-    /* FLOATING ADD BUTTON */
     .fab {
       position: fixed; bottom: 22px; right: 20px; z-index: 50;
       background: linear-gradient(135deg, #facc15, #ca8a04); color: #050507;
@@ -197,7 +199,6 @@
     }
     .fab:active { transform: scale(0.95); }
 
-    /* MODAL */
     .modal-bg {
       position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.78);
       backdrop-filter: blur(8px); display: none; align-items: flex-end; justify-content: center; padding: 14px;
@@ -226,7 +227,6 @@
       border-radius: 12px; padding: 0 14px; font-size: 11px; font-weight: 800; cursor: pointer; white-space: nowrap;
     }
 
-    /* TOAST */
     #toast {
       position: fixed; bottom: 82px; left: 50%; transform: translateX(-50%) translateY(20px);
       background: #14161f; border: 1px solid var(--gold); color: #fff;
@@ -241,7 +241,7 @@
 <body>
   <div class="bg-glow"></div>
 
-  <!-- VIP LOCK SCREEN -->
+  <!-- VIP LOCK SCREEN (URL PRE-CONFIGURED) -->
   <div id="lock-screen">
     <div class="lock-card">
       <div class="lock-logo">J</div>
@@ -260,11 +260,12 @@
         <div class="mini-logo">J</div>
         <div>
           <div class="brand-name">JAA<span>DUGAR</span></div>
-          <div class="live-dot" id="conn-state"><i></i> LIVE CONNECTED</div>
+          <div class="live-dot"><i></i> LIVE CONNECTED</div>
         </div>
       </div>
       <div class="top-actions">
         <button class="icon-btn" id="btn-refresh" title="Refresh">↻</button>
+        <button class="icon-btn" id="btn-settings" title="Change URL / PIN">⚙️</button>
         <button class="icon-btn" id="btn-lock" title="Lock">🔒</button>
       </div>
     </div>
@@ -298,7 +299,7 @@
 
   <button class="fab" id="btn-open-modal">+ ADD CLIENT</button>
 
-  <!-- ADD / EDIT MODAL -->
+  <!-- ADD / EDIT CLIENT MODAL -->
   <div class="modal-bg" id="add-modal">
     <div class="modal-box">
       <div class="modal-head">
@@ -327,10 +328,102 @@
     </div>
   </div>
 
+  <!-- SETTINGS MODAL -->
+  <div class="modal-bg" id="settings-modal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-title">SERVER SETTINGS</div>
+        <button class="close-x" id="btn-close-settings">&times;</button>
+      </div>
+      <div class="field">
+        <label>Apps Script Web App URL</label>
+        <input type="url" id="set-url" />
+      </div>
+      <div class="field">
+        <label>Admin PIN</label>
+        <input type="password" id="set-pin" placeholder="786786" />
+      </div>
+      <button class="btn-gold" id="btn-save-settings" style="margin-top:6px;">UPDATE &amp; RECONNECT</button>
+    </div>
+  </div>
+
   <div id="toast"></div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwKcB_-5vAtfU8AiK6-pHkea2xJlyQW_-_-pjm8kbteeS7ht6yYWa33dJ6Zjh6D8TJwzQ/exec";
+    // Generate crisp 512x512 Matte Black & Gold VIP App Icon for iOS & Android Home Screen
+    (function setupAppIcon() {
+      const c = document.createElement("canvas");
+      c.width = 512; c.height = 512;
+      const ctx = c.getContext("2d");
+
+      // Matte Black Radial Background
+      const bg = ctx.createRadialGradient(256, 130, 30, 256, 256, 360);
+      bg.addColorStop(0, "#241b06");
+      bg.addColorStop(1, "#050507");
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, 512, 512);
+
+      // Gold Frame Border
+      ctx.strokeStyle = "rgba(234, 179, 8, 0.35)";
+      ctx.lineWidth = 14;
+      ctx.strokeRect(24, 24, 464, 464);
+
+      // Luxury Gold Hexagon Crest
+      const cx = 256, cy = 225, r = 132;
+      ctx.save();
+      ctx.shadowColor = "#eab308";
+      ctx.shadowBlur = 28;
+      const goldGrad = ctx.createLinearGradient(120, 90, 390, 360);
+      goldGrad.addColorStop(0, "#fde047");
+      goldGrad.addColorStop(0.5, "#eab308");
+      goldGrad.addColorStop(1, "#a16207");
+      ctx.strokeStyle = goldGrad;
+      ctx.lineWidth = 16;
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i - Math.PI / 2;
+        const x = cx + r * Math.cos(angle);
+        const y = cy + r * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.stroke();
+
+      // Bold Gold "J" Monogram
+      ctx.fillStyle = goldGrad;
+      ctx.font = "900 175px Arial Black, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("J", 256, 232);
+      ctx.restore();
+
+      // JAADUGAR Label at Bottom
+      ctx.shadowColor = "rgba(234, 179, 8, 0.5)";
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 46px Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("JAADUGAR", 256, 438);
+
+      const pngUrl = c.toDataURL("image/png");
+      document.getElementById("apple-icon").href = pngUrl;
+
+      const manifest = {
+        name: "JAADUGAR — VIP Control",
+        short_name: "JAADUGAR",
+        start_url: location.href,
+        display: "standalone",
+        background_color: "#050507",
+        theme_color: "#050507",
+        icons: [{ src: pngUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }]
+      };
+      const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
+      document.getElementById("pwa-manifest").href = URL.createObjectURL(blob);
+    })();
+
+    const DEFAULT_URL = "https://script.google.com/macros/s/AKfycbwKcB_-5vAtfU8AiK6-pHkea2xJlyQW_-_-pjm8kbteeS7ht6yYWa33dJ6Zjh6D8TJwzQ/exec";
+    let apiUrl = localStorage.getItem("JAADUGAR_URL") || DEFAULT_URL;
     let adminPin = localStorage.getItem("JAADUGAR_PIN") || "";
     let users = [];
     let currentFilter = "all";
@@ -343,7 +436,7 @@
     }
 
     async function api(payload) {
-      const res = await fetch(API_URL, {
+      const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify({ ...payload, adminPin })
@@ -406,9 +499,11 @@
         const data = await api({ action: "getUsers" });
         if (data.status !== "success") throw new Error(data.message || "Invalid PIN");
         users = data.users || [];
+        localStorage.setItem("JAADUGAR_URL", apiUrl);
         localStorage.setItem("JAADUGAR_PIN", adminPin);
         document.getElementById("lock-screen").style.display = "none";
         document.getElementById("app").style.display = "block";
+        document.getElementById("lock-err").style.display = "none";
         render();
         if (!fromLock) toast("Synced with Sheet ✓");
       } catch (err) {
@@ -453,7 +548,12 @@
 
     document.getElementById("btn-unlock").onclick = () => {
       adminPin = document.getElementById("pin-input").value.trim();
-      if (!adminPin) return;
+      if (!adminPin) {
+        const e = document.getElementById("lock-err");
+        e.textContent = "Admin PIN likhein.";
+        e.style.display = "block";
+        return;
+      }
       loadUsers(true);
     };
     document.getElementById("pin-input").addEventListener("keypress", e => { if (e.key === "Enter") document.getElementById("btn-unlock").click(); });
@@ -464,6 +564,21 @@
       document.getElementById("pin-input").value = "";
       document.getElementById("app").style.display = "none";
       document.getElementById("lock-screen").style.display = "flex";
+    };
+
+    const setModal = document.getElementById("settings-modal");
+    document.getElementById("btn-settings").onclick = () => {
+      document.getElementById("set-url").value = apiUrl;
+      document.getElementById("set-pin").value = adminPin;
+      setModal.classList.add("open");
+    };
+    document.getElementById("btn-close-settings").onclick = () => setModal.classList.remove("open");
+    setModal.onclick = (e) => { if (e.target === setModal) setModal.classList.remove("open"); };
+    document.getElementById("btn-save-settings").onclick = () => {
+      apiUrl = document.getElementById("set-url").value.trim() || DEFAULT_URL;
+      adminPin = document.getElementById("set-pin").value.trim();
+      setModal.classList.remove("open");
+      loadUsers();
     };
 
     document.getElementById("btn-refresh").onclick = () => loadUsers();
