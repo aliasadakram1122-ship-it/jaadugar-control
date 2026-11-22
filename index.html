@@ -74,8 +74,8 @@
     .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: rgba(0,0,0,0.35); border-radius: 10px; padding: 10px; margin-bottom: 12px; font-size: 11px; color: var(--muted); }
     .meta-grid strong { color: #e2e8f0; font-family: ui-monospace, monospace; display: block; margin-top: 2px; font-size: 12px; word-break: break-all; }
 
-    .card-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
-    .act-btn { border: 1px solid var(--border); background: var(--surface-2); color: #e2e8f0; padding: 9px 6px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; }
+    .card-actions { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .act-btn { border: 1px solid var(--border); background: var(--surface-2); color: #e2e8f0; padding: 9px 4px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; }
     .act-btn:active { transform: scale(0.95); }
     .act-copy { border-color: rgba(234,179,8,0.35); color: var(--gold-light); background: rgba(234,179,8,0.08); }
     .act-suspend { border-color: rgba(244,63,94,0.35); color: #fda4af; background: rgba(244,63,94,0.1); }
@@ -100,7 +100,6 @@
     .key-row { display: flex; gap: 8px; }
     .gen-btn { background: var(--surface-2); border: 1px solid rgba(234,179,8,0.35); color: var(--gold); border-radius: 12px; padding: 0 14px; font-size: 11px; font-weight: 800; cursor: pointer; white-space: nowrap; }
 
-    /* 3-Option Expiry Selector */
     .exp-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
     .exp-btn { background: var(--surface-2); border: 1px solid var(--border); color: var(--muted); padding: 10px 6px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.15s; }
     .exp-btn.active { background: rgba(234, 179, 8, 0.16); color: var(--gold-light); border-color: var(--gold); }
@@ -160,11 +159,11 @@
 
   <button class="fab" id="btn-open-modal">+ ADD CLIENT</button>
 
-  <!-- ADD / UPDATE MODAL -->
+  <!-- ADD CLIENT MODAL -->
   <div class="modal-bg" id="add-modal">
     <div class="modal-box">
       <div class="modal-head">
-        <div class="modal-title">NEW / UPDATE LICENSE</div>
+        <div class="modal-title">NEW LICENSE</div>
         <button class="close-x" id="btn-close-modal">&times;</button>
       </div>
       <div class="field">
@@ -195,6 +194,41 @@
         </select>
       </div>
       <button class="btn-gold" id="btn-save-user" style="margin-top:6px;">SAVE LICENSE</button>
+    </div>
+  </div>
+
+  <!-- EDIT CLIENT MODAL -->
+  <div class="modal-bg" id="edit-modal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-title">EDIT CLIENT</div>
+        <button class="close-x" id="btn-close-edit">&times;</button>
+      </div>
+      <div class="field">
+        <label>Client Email</label>
+        <input type="text" id="ed-email" disabled style="opacity:0.6;" />
+      </div>
+      <div class="field">
+        <label>License Key / Password</label>
+        <input type="text" id="ed-key" />
+      </div>
+      <div class="field">
+        <label>Expiry Plan</label>
+        <div class="exp-pills">
+          <button type="button" class="exp-btn" onclick="pickExpiry('ed-expiry', 1, this)">1 Month</button>
+          <button type="button" class="exp-btn" onclick="pickExpiry('ed-expiry', 2, this)">2 Months</button>
+          <button type="button" class="exp-btn" onclick="pickExpiry('ed-expiry', 0, this)">♾️ Lifetime</button>
+        </div>
+        <input type="text" id="ed-expiry" placeholder="Lifetime (Khali = Lifetime)" />
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="ed-status">
+          <option value="active">Active</option>
+          <option value="suspended">Suspended</option>
+        </select>
+      </div>
+      <button class="btn-gold" id="btn-update-user" style="margin-top:6px;">UPDATE CLIENT</button>
     </div>
   </div>
 
@@ -293,6 +327,7 @@
         const enc = encodeURIComponent(u.email);
         const encKey = encodeURIComponent(u.licenseKey);
         const encExp = encodeURIComponent(u.licenseExpiry || "");
+        const encSt = encodeURIComponent(isAct ? "active" : "suspended");
         return `
           <div class="user-card ${isAct ? "" : "is-suspended"}">
             <div class="card-top">
@@ -309,6 +344,7 @@
               <button class="act-btn act-copy" onclick="copyCreds('${enc}','${encKey}','${encExp}')">📋 Copy</button>
               <button class="act-btn ${isAct ? "act-suspend" : "act-activate"}" onclick="setStatus('${enc}','${nextSt}')">${isAct ? "⛔ Block" : "✅ Active"}</button>
               <button class="act-btn act-reset" onclick="resetDev('${enc}')">🔄 Reset</button>
+              <button class="act-btn" onclick="openEdit('${enc}','${encKey}','${encExp}','${encSt}')">✏️ Edit</button>
               <button class="act-btn" onclick="delUser('${enc}')">🗑 Del</button>
             </div>
           </div>
@@ -342,6 +378,31 @@
     window.setStatus = async (encEmail, status) => { const res = await api({ action: "updateStatus", email: decodeURIComponent(encEmail), status }); if (res.status === "success") { toast(`Status → ${status}`); loadUsers(); } else toast(res.message, true); };
     window.resetDev = async (encEmail) => { const res = await api({ action: "resetDevice", email: decodeURIComponent(encEmail) }); if (res.status === "success") { toast("Device Lock Reset ✓"); loadUsers(); } else toast(res.message, true); };
     window.delUser = async (encEmail) => { const email = decodeURIComponent(encEmail); if (!confirm(`Delete ${email}?`)) return; const res = await api({ action: "deleteUser", email }); if (res.status === "success") { toast("Client Deleted"); loadUsers(); } else toast(res.message, true); };
+
+    // Edit Modal Logic
+    const editModal = document.getElementById("edit-modal");
+    window.openEdit = (encEmail, encKey, encExp, encSt) => {
+      document.getElementById("ed-email").value = decodeURIComponent(encEmail);
+      document.getElementById("ed-key").value = decodeURIComponent(encKey);
+      const exp = decodeURIComponent(encExp);
+      document.getElementById("ed-expiry").value = exp;
+      document.getElementById("ed-status").value = decodeURIComponent(encSt);
+      editModal.querySelectorAll(".exp-btn").forEach(b => b.classList.remove("active"));
+      if (!exp) editModal.querySelectorAll(".exp-btn")[2].classList.add("active");
+      editModal.classList.add("open");
+    };
+    document.getElementById("btn-close-edit").onclick = () => editModal.classList.remove("open");
+    editModal.onclick = (e) => { if (e.target === editModal) editModal.classList.remove("open"); };
+    document.getElementById("btn-update-user").onclick = async () => {
+      const email = document.getElementById("ed-email").value.trim().toLowerCase();
+      const licenseKey = document.getElementById("ed-key").value.trim();
+      const licenseExpiry = document.getElementById("ed-expiry").value.trim();
+      const status = document.getElementById("ed-status").value;
+      if (!email || !licenseKey) { toast("Key required", true); return; }
+      const res = await api({ action: "upsertUser", email, licenseKey, status, licenseExpiry });
+      if (res.status === "success") { editModal.classList.remove("open"); toast("Client Updated ✓"); loadUsers(); }
+      else toast(res.message, true);
+    };
 
     document.getElementById("btn-unlock").onclick = () => {
       adminPin = document.getElementById("pin-input").value.trim();
