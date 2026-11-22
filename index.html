@@ -10,7 +10,6 @@
   <meta name="application-name" content="JAADUGAR" />
   <title>JAADUGAR — VIP Control</title>
 
-  <!-- Browser Tab Icon (Gold Crest J) -->
   <link id="favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23050507'/%3E%3Cpolygon points='256,56 436,156 436,356 256,456 76,356 76,156' fill='none' stroke='%23eab308' stroke-width='26'/%3E%3Ctext x='256' y='325' text-anchor='middle' font-family='Arial Black, sans-serif' font-size='215' font-weight='900' fill='%23facc15'%3EJ%3C/text%3E%3C/svg%3E" />
   <link id="apple-icon" rel="apple-touch-icon" sizes="180x180" href="" />
   <link id="pwa-manifest" rel="manifest" href="" />
@@ -18,197 +17,77 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #050507;
-      --surface: #0c0d12;
-      --surface-2: #14161f;
-      --gold: #eab308;
-      --gold-light: #fde047;
-      --green: #10b981;
-      --red: #f43f5e;
-      --cyan: #06b6d4;
-      --text: #f8fafc;
-      --muted: #8b95a5;
+      --bg: #050507; --surface: #0c0d12; --surface-2: #14161f;
+      --gold: #eab308; --gold-light: #fde047; --green: #10b981;
+      --red: #f43f5e; --cyan: #06b6d4; --text: #f8fafc; --muted: #8b95a5;
       --border: rgba(255, 255, 255, 0.07);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', -apple-system, sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; overflow-x: hidden; }
+    .bg-glow { position: fixed; top: -120px; left: 50%; transform: translateX(-50%); width: 420px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(234,179,8,0.18) 0%, transparent 70%); pointer-events: none; z-index: 0; }
 
-    .bg-glow {
-      position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
-      width: 420px; height: 280px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(234,179,8,0.18) 0%, transparent 70%);
-      pointer-events: none; z-index: 0;
-    }
-
-    /* LOCK SCREEN */
-    #lock-screen {
-      position: fixed; inset: 0; z-index: 999;
-      background: radial-gradient(circle at top, #15120a 0%, #050507 65%);
-      display: flex; align-items: center; justify-content: center; padding: 20px;
-    }
-    .lock-card {
-      width: 100%; max-width: 360px;
-      background: rgba(12, 13, 18, 0.94);
-      border: 1px solid rgba(234, 179, 8, 0.35);
-      border-radius: 22px; padding: 32px 24px; text-align: center;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.85), 0 0 35px rgba(234,179,8,0.08);
-      backdrop-filter: blur(16px);
-    }
-    .lock-logo {
-      width: 66px; height: 66px; margin: 0 auto 14px; border-radius: 18px;
-      background: linear-gradient(135deg, #facc15, #a16207);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Orbitron', sans-serif; font-size: 30px; font-weight: 900; color: #050507;
-      box-shadow: 0 0 28px rgba(234, 179, 8, 0.45);
-    }
-    .lock-title {
-      font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900;
-      letter-spacing: 3px; color: #fff;
-    }
+    #lock-screen { position: fixed; inset: 0; z-index: 999; background: radial-gradient(circle at top, #15120a 0%, #050507 65%); display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .lock-card { width: 100%; max-width: 360px; background: rgba(12, 13, 18, 0.94); border: 1px solid rgba(234, 179, 8, 0.35); border-radius: 22px; padding: 32px 24px; text-align: center; box-shadow: 0 25px 60px rgba(0,0,0,0.85); backdrop-filter: blur(16px); }
+    .lock-logo { width: 66px; height: 66px; margin: 0 auto 14px; border-radius: 18px; background: linear-gradient(135deg, #facc15, #a16207); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-size: 30px; font-weight: 900; color: #050507; box-shadow: 0 0 28px rgba(234, 179, 8, 0.45); }
+    .lock-title { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900; letter-spacing: 3px; color: #fff; }
     .lock-title span { color: var(--gold); }
     .lock-sub { font-size: 11px; color: var(--muted); margin: 6px 0 24px; letter-spacing: 1px; }
-
-    .pin-input {
-      width: 100%; background: #050507; border: 1px solid rgba(234, 179, 8, 0.35);
-      color: var(--gold-light); padding: 15px; border-radius: 14px;
-      font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 800;
-      text-align: center; letter-spacing: 8px; outline: none; margin-bottom: 16px;
-    }
+    .pin-input { width: 100%; background: #050507; border: 1px solid rgba(234, 179, 8, 0.35); color: var(--gold-light); padding: 15px; border-radius: 14px; font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 800; text-align: center; letter-spacing: 8px; outline: none; margin-bottom: 16px; }
     .pin-input:focus { border-color: var(--gold); box-shadow: 0 0 20px rgba(234,179,8,0.2); }
-
-    .btn-gold {
-      width: 100%; border: none; border-radius: 14px; padding: 14px;
-      background: linear-gradient(135deg, #facc15, #ca8a04);
-      color: #090702; font-family: 'Orbitron', sans-serif; font-size: 13px;
-      font-weight: 900; letter-spacing: 1.5px; cursor: pointer;
-      box-shadow: 0 10px 25px rgba(234, 179, 8, 0.25); transition: 0.2s;
-    }
+    .btn-gold { width: 100%; border: none; border-radius: 14px; padding: 14px; background: linear-gradient(135deg, #facc15, #ca8a04); color: #090702; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 900; letter-spacing: 1.5px; cursor: pointer; box-shadow: 0 10px 25px rgba(234, 179, 8, 0.25); transition: 0.2s; }
     .btn-gold:active { transform: scale(0.98); }
 
-    /* MAIN APP */
     #app { display: none; position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 16px 14px 90px; }
-
-    .topbar {
-      display: flex; justify-content: space-between; align-items: center;
-      background: rgba(12, 13, 18, 0.88); border: 1px solid rgba(234,179,8,0.22);
-      border-radius: 18px; padding: 14px 16px; margin-bottom: 14px;
-      backdrop-filter: blur(14px);
-    }
+    .topbar { display: flex; justify-content: space-between; align-items: center; background: rgba(12, 13, 18, 0.88); border: 1px solid rgba(234,179,8,0.22); border-radius: 18px; padding: 14px 16px; margin-bottom: 14px; backdrop-filter: blur(14px); }
     .brand-wrap { display: flex; align-items: center; gap: 12px; }
-    .mini-logo {
-      width: 40px; height: 40px; border-radius: 12px;
-      background: linear-gradient(135deg, #facc15, #a16207);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 18px; color: #050507;
-    }
+    .mini-logo { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #facc15, #a16207); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 18px; color: #050507; }
     .brand-name { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900; letter-spacing: 2px; }
     .brand-name span { color: var(--gold); }
-    .live-dot {
-      display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--green); font-weight: 700; margin-top: 2px;
-    }
-    .live-dot i {
-      width: 7px; height: 7px; border-radius: 50%; background: var(--green);
-      box-shadow: 0 0 8px var(--green); display: inline-block;
-    }
-
+    .live-dot { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--green); font-weight: 700; margin-top: 2px; }
+    .live-dot i { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); display: inline-block; }
     .top-actions { display: flex; gap: 8px; }
-    .icon-btn {
-      width: 38px; height: 38px; border-radius: 11px; border: 1px solid var(--border);
-      background: var(--surface-2); color: var(--text); font-size: 16px;
-      display: flex; align-items: center; justify-content: center; cursor: pointer;
-    }
+    .icon-btn { width: 38px; height: 38px; border-radius: 11px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .icon-btn:active { transform: scale(0.94); }
 
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
-    .stat-card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-      padding: 14px 12px; text-align: center; position: relative; overflow: hidden;
-    }
-    .stat-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.6;
-    }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 14px 12px; text-align: center; position: relative; overflow: hidden; }
+    .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.6; }
     .stat-num { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900; }
     .stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 700; }
 
     .controls-bar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
-    .search-input {
-      width: 100%; background: var(--surface); border: 1px solid var(--border);
-      color: #fff; padding: 13px 15px; border-radius: 14px; font-size: 13px; outline: none;
-    }
+    .search-input { width: 100%; background: var(--surface); border: 1px solid var(--border); color: #fff; padding: 13px 15px; border-radius: 14px; font-size: 13px; outline: none; }
     .search-input:focus { border-color: rgba(234, 179, 8, 0.5); }
-
     .tabs { display: flex; gap: 8px; }
-    .tab-btn {
-      flex: 1; padding: 9px; border-radius: 11px; border: 1px solid var(--border);
-      background: var(--surface); color: var(--muted); font-size: 12px; font-weight: 700; cursor: pointer;
-    }
-    .tab-btn.active {
-      background: rgba(234, 179, 8, 0.14); color: var(--gold-light);
-      border-color: rgba(234, 179, 8, 0.45);
-    }
+    .tab-btn { flex: 1; padding: 9px; border-radius: 11px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .tab-btn.active { background: rgba(234, 179, 8, 0.14); color: var(--gold-light); border-color: rgba(234, 179, 8, 0.45); }
 
     .user-list { display: flex; flex-direction: column; gap: 11px; }
-    .user-card {
-      background: linear-gradient(145deg, #0e1017, #090a0f);
-      border: 1px solid var(--border); border-left: 3px solid var(--gold);
-      border-radius: 16px; padding: 15px; transition: 0.2s;
-    }
+    .user-card { background: linear-gradient(145deg, #0e1017, #090a0f); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 16px; padding: 15px; transition: 0.2s; }
     .user-card.is-suspended { border-left-color: var(--red); opacity: 0.88; }
     .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
     .u-email { font-size: 14px; font-weight: 800; color: #fff; word-break: break-all; }
-    .pill {
-      font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 999px;
-      text-transform: uppercase; letter-spacing: 0.8px; flex-shrink: 0;
-    }
+    .pill { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.8px; flex-shrink: 0; }
     .pill-active { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
     .pill-suspended { background: rgba(244,63,94,0.15); color: var(--red); border: 1px solid rgba(244,63,94,0.3); }
 
-    .meta-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-      background: rgba(0,0,0,0.35); border-radius: 10px; padding: 10px; margin-bottom: 12px;
-      font-size: 11px; color: var(--muted);
-    }
+    .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: rgba(0,0,0,0.35); border-radius: 10px; padding: 10px; margin-bottom: 12px; font-size: 11px; color: var(--muted); }
     .meta-grid strong { color: #e2e8f0; font-family: ui-monospace, monospace; display: block; margin-top: 2px; font-size: 12px; word-break: break-all; }
 
     .card-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
-    .act-btn {
-      border: 1px solid var(--border); background: var(--surface-2); color: #e2e8f0;
-      padding: 9px 6px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer;
-      text-align: center;
-    }
+    .act-btn { border: 1px solid var(--border); background: var(--surface-2); color: #e2e8f0; padding: 9px 6px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; }
     .act-btn:active { transform: scale(0.95); }
     .act-copy { border-color: rgba(234,179,8,0.35); color: var(--gold-light); background: rgba(234,179,8,0.08); }
     .act-suspend { border-color: rgba(244,63,94,0.35); color: #fda4af; background: rgba(244,63,94,0.1); }
     .act-activate { border-color: rgba(16,185,129,0.35); color: #6ee7b7; background: rgba(16,185,129,0.1); }
     .act-reset { border-color: rgba(6,182,212,0.35); color: #67e8f9; background: rgba(6,182,212,0.08); }
 
-    .fab {
-      position: fixed; bottom: 22px; right: 20px; z-index: 50;
-      background: linear-gradient(135deg, #facc15, #ca8a04); color: #050507;
-      border: none; border-radius: 999px; padding: 14px 22px;
-      font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 900; letter-spacing: 1px;
-      box-shadow: 0 12px 30px rgba(234,179,8,0.4); cursor: pointer;
-    }
+    .fab { position: fixed; bottom: 22px; right: 20px; z-index: 50; background: linear-gradient(135deg, #facc15, #ca8a04); color: #050507; border: none; border-radius: 999px; padding: 14px 22px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 900; letter-spacing: 1px; box-shadow: 0 12px 30px rgba(234,179,8,0.4); cursor: pointer; }
     .fab:active { transform: scale(0.95); }
 
-    .modal-bg {
-      position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.78);
-      backdrop-filter: blur(8px); display: none; align-items: flex-end; justify-content: center; padding: 14px;
-    }
+    .modal-bg { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.78); backdrop-filter: blur(8px); display: none; align-items: flex-end; justify-content: center; padding: 14px; }
     .modal-bg.open { display: flex; }
-    .modal-box {
-      width: 100%; max-width: 440px; background: #0e1017;
-      border: 1px solid rgba(234,179,8,0.35); border-radius: 22px; padding: 22px;
-      animation: slideUp 0.22s ease-out;
-    }
+    .modal-box { width: 100%; max-width: 440px; background: #0e1017; border: 1px solid rgba(234,179,8,0.35); border-radius: 22px; padding: 22px; animation: slideUp 0.22s ease-out; }
     @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .modal-title { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 800; color: var(--gold); }
@@ -216,24 +95,17 @@
 
     .field { margin-bottom: 12px; }
     .field label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 5px; font-weight: 700; text-transform: uppercase; }
-    .field input, .field select {
-      width: 100%; background: #050507; border: 1px solid var(--border); color: #fff;
-      padding: 12px; border-radius: 12px; font-size: 13px; outline: none;
-    }
+    .field input, .field select { width: 100%; background: #050507; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 12px; font-size: 13px; outline: none; }
     .field input:focus { border-color: var(--gold); }
     .key-row { display: flex; gap: 8px; }
-    .gen-btn {
-      background: var(--surface-2); border: 1px solid rgba(234,179,8,0.35); color: var(--gold);
-      border-radius: 12px; padding: 0 14px; font-size: 11px; font-weight: 800; cursor: pointer; white-space: nowrap;
-    }
+    .gen-btn { background: var(--surface-2); border: 1px solid rgba(234,179,8,0.35); color: var(--gold); border-radius: 12px; padding: 0 14px; font-size: 11px; font-weight: 800; cursor: pointer; white-space: nowrap; }
 
-    #toast {
-      position: fixed; bottom: 82px; left: 50%; transform: translateX(-50%) translateY(20px);
-      background: #14161f; border: 1px solid var(--gold); color: #fff;
-      padding: 11px 18px; border-radius: 999px; font-size: 12px; font-weight: 700;
-      opacity: 0; pointer-events: none; transition: 0.25s; z-index: 9999; white-space: nowrap;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-    }
+    /* 3-Option Expiry Selector */
+    .exp-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+    .exp-btn { background: var(--surface-2); border: 1px solid var(--border); color: var(--muted); padding: 10px 6px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.15s; }
+    .exp-btn.active { background: rgba(234, 179, 8, 0.16); color: var(--gold-light); border-color: var(--gold); }
+
+    #toast { position: fixed; bottom: 82px; left: 50%; transform: translateX(-50%) translateY(20px); background: #14161f; border: 1px solid var(--gold); color: #fff; padding: 11px 18px; border-radius: 999px; font-size: 12px; font-weight: 700; opacity: 0; pointer-events: none; transition: 0.25s; z-index: 9999; white-space: nowrap; box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     #toast.err { border-color: var(--red); color: #fda4af; }
   </style>
@@ -241,7 +113,6 @@
 <body>
   <div class="bg-glow"></div>
 
-  <!-- VIP LOCK SCREEN (URL PRE-CONFIGURED) -->
   <div id="lock-screen">
     <div class="lock-card">
       <div class="lock-logo">J</div>
@@ -253,7 +124,6 @@
     </div>
   </div>
 
-  <!-- MAIN CONTROL APP -->
   <div id="app">
     <div class="topbar">
       <div class="brand-wrap">
@@ -265,24 +135,15 @@
       </div>
       <div class="top-actions">
         <button class="icon-btn" id="btn-refresh" title="Refresh">↻</button>
-        <button class="icon-btn" id="btn-settings" title="Change URL / PIN">⚙️</button>
+        <button class="icon-btn" id="btn-settings" title="Settings">⚙️</button>
         <button class="icon-btn" id="btn-lock" title="Lock">🔒</button>
       </div>
     </div>
 
     <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-num" id="st-total">0</div>
-        <div class="stat-lbl">Total</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" id="st-active" style="color: var(--green);">0</div>
-        <div class="stat-lbl">Active</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" id="st-suspended" style="color: var(--red);">0</div>
-        <div class="stat-lbl">Suspended</div>
-      </div>
+      <div class="stat-card"><div class="stat-num" id="st-total">0</div><div class="stat-lbl">Total</div></div>
+      <div class="stat-card"><div class="stat-num" id="st-active" style="color: var(--green);">0</div><div class="stat-lbl">Active</div></div>
+      <div class="stat-card"><div class="stat-num" id="st-suspended" style="color: var(--red);">0</div><div class="stat-lbl">Suspended</div></div>
     </div>
 
     <div class="controls-bar">
@@ -299,7 +160,7 @@
 
   <button class="fab" id="btn-open-modal">+ ADD CLIENT</button>
 
-  <!-- ADD / EDIT CLIENT MODAL -->
+  <!-- ADD / UPDATE MODAL -->
   <div class="modal-bg" id="add-modal">
     <div class="modal-box">
       <div class="modal-head">
@@ -316,6 +177,15 @@
           <input type="text" id="in-key" placeholder="JDG-XXXXX-2026" />
           <button class="gen-btn" id="btn-gen">⚡ AUTO</button>
         </div>
+      </div>
+      <div class="field">
+        <label>Expiry Plan</label>
+        <div class="exp-pills">
+          <button type="button" class="exp-btn" onclick="pickExpiry('in-expiry', 1, this)">1 Month</button>
+          <button type="button" class="exp-btn" onclick="pickExpiry('in-expiry', 2, this)">2 Months</button>
+          <button type="button" class="exp-btn active" onclick="pickExpiry('in-expiry', 0, this)">♾️ Lifetime</button>
+        </div>
+        <input type="text" id="in-expiry" placeholder="Lifetime (Khali = Lifetime)" />
       </div>
       <div class="field">
         <label>Status</label>
@@ -335,14 +205,8 @@
         <div class="modal-title">SERVER SETTINGS</div>
         <button class="close-x" id="btn-close-settings">&times;</button>
       </div>
-      <div class="field">
-        <label>Apps Script Web App URL</label>
-        <input type="url" id="set-url" />
-      </div>
-      <div class="field">
-        <label>Admin PIN</label>
-        <input type="password" id="set-pin" placeholder="786786" />
-      </div>
+      <div class="field"><label>Apps Script Web App URL</label><input type="url" id="set-url" /></div>
+      <div class="field"><label>Admin PIN</label><input type="password" id="set-pin" placeholder="786786" /></div>
       <button class="btn-gold" id="btn-save-settings" style="margin-top:6px;">UPDATE &amp; RECONNECT</button>
     </div>
   </div>
@@ -350,77 +214,43 @@
   <div id="toast"></div>
 
   <script>
-    // Generate crisp 512x512 Matte Black & Gold VIP App Icon for iOS & Android Home Screen
     (function setupAppIcon() {
       const c = document.createElement("canvas");
       c.width = 512; c.height = 512;
       const ctx = c.getContext("2d");
-
-      // Matte Black Radial Background
       const bg = ctx.createRadialGradient(256, 130, 30, 256, 256, 360);
-      bg.addColorStop(0, "#241b06");
-      bg.addColorStop(1, "#050507");
-      ctx.fillStyle = bg;
-      ctx.fillRect(0, 0, 512, 512);
-
-      // Gold Frame Border
-      ctx.strokeStyle = "rgba(234, 179, 8, 0.35)";
-      ctx.lineWidth = 14;
-      ctx.strokeRect(24, 24, 464, 464);
-
-      // Luxury Gold Hexagon Crest
+      bg.addColorStop(0, "#241b06"); bg.addColorStop(1, "#050507");
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, 512, 512);
+      ctx.strokeStyle = "rgba(234, 179, 8, 0.35)"; ctx.lineWidth = 14; ctx.strokeRect(24, 24, 464, 464);
       const cx = 256, cy = 225, r = 132;
-      ctx.save();
-      ctx.shadowColor = "#eab308";
-      ctx.shadowBlur = 28;
+      ctx.save(); ctx.shadowColor = "#eab308"; ctx.shadowBlur = 28;
       const goldGrad = ctx.createLinearGradient(120, 90, 390, 360);
-      goldGrad.addColorStop(0, "#fde047");
-      goldGrad.addColorStop(0.5, "#eab308");
-      goldGrad.addColorStop(1, "#a16207");
-      ctx.strokeStyle = goldGrad;
-      ctx.lineWidth = 16;
-      ctx.beginPath();
-      for (let i = 0; i < 6; i++) {
-        const angle = (Math.PI / 3) * i - Math.PI / 2;
-        const x = cx + r * Math.cos(angle);
-        const y = cy + r * Math.sin(angle);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.closePath();
-      ctx.stroke();
-
-      // Bold Gold "J" Monogram
-      ctx.fillStyle = goldGrad;
-      ctx.font = "900 175px Arial Black, sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText("J", 256, 232);
-      ctx.restore();
-
-      // JAADUGAR Label at Bottom
-      ctx.shadowColor = "rgba(234, 179, 8, 0.5)";
-      ctx.shadowBlur = 10;
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "900 46px Arial, sans-serif";
-      ctx.textAlign = "center";
+      goldGrad.addColorStop(0, "#fde047"); goldGrad.addColorStop(0.5, "#eab308"); goldGrad.addColorStop(1, "#a16207");
+      ctx.strokeStyle = goldGrad; ctx.lineWidth = 16; ctx.beginPath();
+      for (let i = 0; i < 6; i++) { const a = (Math.PI / 3) * i - Math.PI / 2; const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a); i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
+      ctx.closePath(); ctx.stroke();
+      ctx.fillStyle = goldGrad; ctx.font = "900 175px Arial Black, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText("J", 256, 232); ctx.restore();
+      ctx.shadowColor = "rgba(234, 179, 8, 0.5)"; ctx.shadowBlur = 10; ctx.fillStyle = "#ffffff"; ctx.font = "900 46px Arial, sans-serif"; ctx.textAlign = "center";
       ctx.fillText("JAADUGAR", 256, 438);
-
       const pngUrl = c.toDataURL("image/png");
       document.getElementById("apple-icon").href = pngUrl;
-
-      const manifest = {
-        name: "JAADUGAR — VIP Control",
-        short_name: "JAADUGAR",
-        start_url: location.href,
-        display: "standalone",
-        background_color: "#050507",
-        theme_color: "#050507",
-        icons: [{ src: pngUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }]
-      };
-      const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
-      document.getElementById("pwa-manifest").href = URL.createObjectURL(blob);
+      const manifest = { name: "JAADUGAR — VIP Control", short_name: "JAADUGAR", start_url: location.href, display: "standalone", background_color: "#050507", theme_color: "#050507", icons: [{ src: pngUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }] };
+      document.getElementById("pwa-manifest").href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: "application/json" }));
     })();
+
+    window.pickExpiry = function(inputId, months, btn) {
+      btn.parentElement.querySelectorAll(".exp-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const el = document.getElementById(inputId);
+      if (months === 0) {
+        el.value = "";
+      } else {
+        const d = new Date();
+        d.setMonth(d.getMonth() + months);
+        el.value = d.toISOString().split("T")[0];
+      }
+    };
 
     const DEFAULT_URL = "https://script.google.com/macros/s/AKfycbwKcB_-5vAtfU8AiK6-pHkea2xJlyQW_-_-pjm8kbteeS7ht6yYWa33dJ6Zjh6D8TJwzQ/exec";
     let apiUrl = localStorage.getItem("JAADUGAR_URL") || DEFAULT_URL;
@@ -430,17 +260,12 @@
 
     function toast(msg, isErr = false) {
       const t = document.getElementById("toast");
-      t.textContent = msg;
-      t.className = "show" + (isErr ? " err" : "");
+      t.textContent = msg; t.className = "show" + (isErr ? " err" : "");
       setTimeout(() => t.className = "", 2600);
     }
 
     async function api(payload) {
-      const res = await fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ ...payload, adminPin })
-      });
+      const res = await fetch(apiUrl, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ ...payload, adminPin }) });
       return JSON.parse(await res.text());
     }
 
@@ -456,22 +281,18 @@
         if (currentFilter === "active" && !isAct) return false;
         if (currentFilter === "suspended" && isAct) return false;
         if (!q) return true;
-        return u.email.toLowerCase().includes(q) ||
-               u.licenseKey.toLowerCase().includes(q) ||
-               u.deviceId.toLowerCase().includes(q);
+        return u.email.toLowerCase().includes(q) || u.licenseKey.toLowerCase().includes(q) || u.deviceId.toLowerCase().includes(q);
       });
 
       const list = document.getElementById("user-list");
-      if (!filtered.length) {
-        list.innerHTML = '<div style="text-align:center;color:#64748b;padding:30px;font-size:13px;">No clients found.</div>';
-        return;
-      }
+      if (!filtered.length) { list.innerHTML = '<div style="text-align:center;color:#64748b;padding:30px;font-size:13px;">No clients found.</div>'; return; }
 
       list.innerHTML = filtered.map(u => {
         const isAct = u.status.toLowerCase() === "active";
         const nextSt = isAct ? "suspended" : "active";
         const enc = encodeURIComponent(u.email);
         const encKey = encodeURIComponent(u.licenseKey);
+        const encExp = encodeURIComponent(u.licenseExpiry || "");
         return `
           <div class="user-card ${isAct ? "" : "is-suspended"}">
             <div class="card-top">
@@ -481,10 +302,11 @@
             <div class="meta-grid">
               <div>License Key<strong>${u.licenseKey}</strong></div>
               <div>Session<strong>${u.sessionToken ? "🟢 Online" : "⚪ Offline"}</strong></div>
-              <div style="grid-column: span 2;">Device Lock<strong>${u.deviceId || "🔓 Open (Not Bound)"}</strong></div>
+              <div>Expiry<strong>${u.licenseExpiry || "♾️ Lifetime"}</strong></div>
+              <div>Device Lock<strong>${u.deviceId || "🔓 Open"}</strong></div>
             </div>
             <div class="card-actions">
-              <button class="act-btn act-copy" onclick="copyCreds('${enc}','${encKey}')">📋 Copy</button>
+              <button class="act-btn act-copy" onclick="copyCreds('${enc}','${encKey}','${encExp}')">📋 Copy</button>
               <button class="act-btn ${isAct ? "act-suspend" : "act-activate"}" onclick="setStatus('${enc}','${nextSt}')">${isAct ? "⛔ Block" : "✅ Active"}</button>
               <button class="act-btn act-reset" onclick="resetDev('${enc}')">🔄 Reset</button>
               <button class="act-btn" onclick="delUser('${enc}')">🗑 Del</button>
@@ -507,121 +329,55 @@
         render();
         if (!fromLock) toast("Synced with Sheet ✓");
       } catch (err) {
-        if (fromLock) {
-          const e = document.getElementById("lock-err");
-          e.textContent = err.message;
-          e.style.display = "block";
-        } else {
-          toast(err.message, true);
-        }
+        if (fromLock) { const e = document.getElementById("lock-err"); e.textContent = err.message; e.style.display = "block"; }
+        else toast(err.message, true);
       }
     }
 
-    window.copyCreds = (encEmail, encKey) => {
-      const email = decodeURIComponent(encEmail);
-      const key = decodeURIComponent(encKey);
-      const txt = `✨ JAADUGAR VIP ACCESS ✨\nEmail: ${email}\nKey: ${key}`;
+    window.copyCreds = (encEmail, encKey, encExp) => {
+      const email = decodeURIComponent(encEmail), key = decodeURIComponent(encKey), exp = decodeURIComponent(encExp);
+      const txt = `✨ JAADUGAR VIP ACCESS ✨\nEmail: ${email}\nKey: ${key}\nPlan: ${exp || "Lifetime"}`;
       navigator.clipboard.writeText(txt).then(() => toast("Copied for WhatsApp ✓"));
     };
-
-    window.setStatus = async (encEmail, status) => {
-      const email = decodeURIComponent(encEmail);
-      const res = await api({ action: "updateStatus", email, status });
-      if (res.status === "success") { toast(`${email} → ${status}`); loadUsers(); }
-      else toast(res.message, true);
-    };
-
-    window.resetDev = async (encEmail) => {
-      const email = decodeURIComponent(encEmail);
-      const res = await api({ action: "resetDevice", email });
-      if (res.status === "success") { toast("Device Lock Reset ✓"); loadUsers(); }
-      else toast(res.message, true);
-    };
-
-    window.delUser = async (encEmail) => {
-      const email = decodeURIComponent(encEmail);
-      if (!confirm(`Delete ${email}?`)) return;
-      const res = await api({ action: "deleteUser", email });
-      if (res.status === "success") { toast("Client Deleted"); loadUsers(); }
-      else toast(res.message, true);
-    };
+    window.setStatus = async (encEmail, status) => { const res = await api({ action: "updateStatus", email: decodeURIComponent(encEmail), status }); if (res.status === "success") { toast(`Status → ${status}`); loadUsers(); } else toast(res.message, true); };
+    window.resetDev = async (encEmail) => { const res = await api({ action: "resetDevice", email: decodeURIComponent(encEmail) }); if (res.status === "success") { toast("Device Lock Reset ✓"); loadUsers(); } else toast(res.message, true); };
+    window.delUser = async (encEmail) => { const email = decodeURIComponent(encEmail); if (!confirm(`Delete ${email}?`)) return; const res = await api({ action: "deleteUser", email }); if (res.status === "success") { toast("Client Deleted"); loadUsers(); } else toast(res.message, true); };
 
     document.getElementById("btn-unlock").onclick = () => {
       adminPin = document.getElementById("pin-input").value.trim();
-      if (!adminPin) {
-        const e = document.getElementById("lock-err");
-        e.textContent = "Admin PIN likhein.";
-        e.style.display = "block";
-        return;
-      }
+      if (!adminPin) { const e = document.getElementById("lock-err"); e.textContent = "Admin PIN likhein."; e.style.display = "block"; return; }
       loadUsers(true);
     };
     document.getElementById("pin-input").addEventListener("keypress", e => { if (e.key === "Enter") document.getElementById("btn-unlock").click(); });
-
-    document.getElementById("btn-lock").onclick = () => {
-      localStorage.removeItem("JAADUGAR_PIN");
-      adminPin = "";
-      document.getElementById("pin-input").value = "";
-      document.getElementById("app").style.display = "none";
-      document.getElementById("lock-screen").style.display = "flex";
-    };
+    document.getElementById("btn-lock").onclick = () => { localStorage.removeItem("JAADUGAR_PIN"); adminPin = ""; document.getElementById("pin-input").value = ""; document.getElementById("app").style.display = "none"; document.getElementById("lock-screen").style.display = "flex"; };
 
     const setModal = document.getElementById("settings-modal");
-    document.getElementById("btn-settings").onclick = () => {
-      document.getElementById("set-url").value = apiUrl;
-      document.getElementById("set-pin").value = adminPin;
-      setModal.classList.add("open");
-    };
+    document.getElementById("btn-settings").onclick = () => { document.getElementById("set-url").value = apiUrl; document.getElementById("set-pin").value = adminPin; setModal.classList.add("open"); };
     document.getElementById("btn-close-settings").onclick = () => setModal.classList.remove("open");
     setModal.onclick = (e) => { if (e.target === setModal) setModal.classList.remove("open"); };
-    document.getElementById("btn-save-settings").onclick = () => {
-      apiUrl = document.getElementById("set-url").value.trim() || DEFAULT_URL;
-      adminPin = document.getElementById("set-pin").value.trim();
-      setModal.classList.remove("open");
-      loadUsers();
-    };
+    document.getElementById("btn-save-settings").onclick = () => { apiUrl = document.getElementById("set-url").value.trim() || DEFAULT_URL; adminPin = document.getElementById("set-pin").value.trim(); setModal.classList.remove("open"); loadUsers(); };
 
     document.getElementById("btn-refresh").onclick = () => loadUsers();
     document.getElementById("search-box").oninput = render;
-
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.onclick = () => {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        currentFilter = btn.dataset.filter;
-        render();
-      };
-    });
+    document.querySelectorAll(".tab-btn").forEach(btn => { btn.onclick = () => { document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active")); btn.classList.add("active"); currentFilter = btn.dataset.filter; render(); }; });
 
     const modal = document.getElementById("add-modal");
     document.getElementById("btn-open-modal").onclick = () => modal.classList.add("open");
     document.getElementById("btn-close-modal").onclick = () => modal.classList.remove("open");
     modal.onclick = (e) => { if (e.target === modal) modal.classList.remove("open"); };
-
-    document.getElementById("btn-gen").onclick = () => {
-      const r = Math.random().toString(36).substring(2, 7).toUpperCase();
-      document.getElementById("in-key").value = `JDG-${r}-2026`;
-    };
-
+    document.getElementById("btn-gen").onclick = () => { const r = Math.random().toString(36).substring(2, 7).toUpperCase(); document.getElementById("in-key").value = `JDG-${r}-2026`; };
     document.getElementById("btn-save-user").onclick = async () => {
       const email = document.getElementById("in-email").value.trim().toLowerCase();
       const licenseKey = document.getElementById("in-key").value.trim();
+      const licenseExpiry = document.getElementById("in-expiry").value.trim();
       const status = document.getElementById("in-status").value;
       if (!email || !licenseKey) { toast("Email & Key required", true); return; }
-      const res = await api({ action: "upsertUser", email, licenseKey, status });
-      if (res.status === "success") {
-        modal.classList.remove("open");
-        document.getElementById("in-email").value = "";
-        document.getElementById("in-key").value = "";
-        toast("License Saved ✓");
-        loadUsers();
-      } else toast(res.message, true);
+      const res = await api({ action: "upsertUser", email, licenseKey, status, licenseExpiry });
+      if (res.status === "success") { modal.classList.remove("open"); document.getElementById("in-email").value = ""; document.getElementById("in-key").value = ""; document.getElementById("in-expiry").value = ""; toast("License Saved ✓"); loadUsers(); }
+      else toast(res.message, true);
     };
 
-    if (adminPin) {
-      document.getElementById("pin-input").value = adminPin;
-      loadUsers(true);
-    }
+    if (adminPin) { document.getElementById("pin-input").value = adminPin; loadUsers(true); }
   </script>
 </body>
 </html>
